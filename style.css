@@ -1,0 +1,119 @@
+*{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background: black;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    min-height: 100vh;       /* Ensure the body takes the full height of the viewport */
+}
+
+#canvas{
+    width: 100%;
+    max-width: calc(100vh * (16 / 9)); /* Ensure the canvas maintains aspect ratio and doesn't exceed viewport height */
+    aspect-ratio: 16 / 9;
+    background: rgb(255, 255, 255);
+    position: relative;
+}
+
+
+/* Game Window */
+#Title{
+    position: absolute;
+    margin-left: 50%;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    color: rgb(0, 135, 0);
+    font-size: 8vw;
+    margin-top: 10%;
+}
+#Underline{
+    position: absolute;
+    margin-left: 50%;
+    background: rgb(0, 135, 0);
+    width: 50vh;
+    height: 1vh;
+    transform: translate(-50%, -50%);
+    font-size: 1.5vw;
+    margin-top: 12%;
+}
+
+
+
+
+
+
+
+
+
+/* Prompt Window */
+#prompt *{
+    font-size: 2vw;
+}
+#prompt{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    z-index: 1000
+}
+#promptWindow{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: rgb(0, 0, 0);
+    font-size: 24px;
+    font-weight: bold;
+    background: white;
+    padding: 5vw;
+}
+#promptText{
+    margin-bottom: 20px;
+}
+#promptButtons{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+#promptButton, button{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: black 0.1vw solid;
+    border-radius: 10px;
+    transition-duration: 0.4s;
+    box-shadow: 0 5px #666;
+    transform: translateY(1px);
+
+}
+
+#promptButton:hover, button:hover {
+    background-color: #45a049;
+    box-shadow: 0 4px #666;
+    transform: translateY(2px);
+}
+
+#promptButton:active, button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 1px #666;
+    transform: translateY(5px);
+}

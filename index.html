@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>Pico Park IL</title>
+        <script src="gamepad.js"></script>
+        <script src="main.js"></script>
+    </head>
+    <body>
+        <div id="canvas">
+            <div id="Opening">
+                <div id="Title">Pico Park IL</div>
+                <div id="Underline"></div>
+                <div id="Action">There are currently no players. Please press any key or the A button on a controller to join.</div>
+            </div>
+        </div>
+        <div id="prompt" style="display: none;">
+            <div id="promptWindow">
+                <div id="promptTitle">Connecting Controller to Player 1</div>
+                <div id="promptText">What type of controller are you using?</div>
+                <div id="promptType">No Controller Type Selected.</div>
+                <div id="promptButtons">
+                    <button id="promptButtonGameCube" onclick="answerGamepadPrompt(0)">Switch</button>
+                    <button id="promptButtonSwitch" onclick="answerGamepadPrompt(1)">GameCube</button>
+
+                    <button id="closeButton" class="closeButton" onclick="closeGamepadPrompt()">close</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
