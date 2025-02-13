@@ -1,4 +1,5 @@
-# PikoPark_IL (STILL A WORK IN PROGRESS!!!)
+# PikoPark IL
 This is my remake of Piko Park.
+Piko Park IL (InterLinked) does not belong to InterLinked Creations. This is just a fan made game.
 
-This game hardly has anything. The players aren't even there. There is hardly any JavaScript. I'm trying to add Controller support to my game through one of my tools, [Gamepad.js](https://github.com/SuperGamer001/Gamepad.js). I'm also trying to fix the title screen.
+Still a work in progress. Mainly an experiment for a new method of making games, which has been proven to work. Production should start real soon.
