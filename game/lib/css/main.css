@@ -1,5 +1,6 @@
 * {
     user-select: none;
+    image-rendering: pixelated;
 }
 body {
     margin: 0;
@@ -34,8 +35,17 @@ p, h1, h2, h3, h4, h5, h6 {
 
 .player {
     position: absolute;
-    background-color: red;
-    width: 5vw;
-    height: 5vw;
-    border-radius: 8px;
+    /* background-color: red; */
+    background-image: url(../textures/PikoPlayer.png);
+    background-size: 3305%;
+}
+.player .hat {
+    position: absolute;
+    /* background-color: #0000ff4f; */
+    background-image: url(../textures/Hats.png);
+    background-size: 566%;
+    width: 4vw;
+    height: 3vw;
+    left: -0.25vw;
+    top: -1vw;
 }

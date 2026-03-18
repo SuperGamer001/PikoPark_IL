@@ -3,18 +3,44 @@ const KEYS = {};
 const PLAYERS = [];
 const PLATFORM_DIVS = [];
 const PLATFORM_COLLIDERS = [];
-const PLAYER_SIZE = 5;
-const GRAVITY = 0.1;
+const PLAYER_WIDTH = 3.5;
+const PLAYER_HEIGHT = 4.06;
+const GRAVITY = 0.08;
 const STAGES = {
     "default": [
         { width: 102, height: 5, left: -1, top: 52 },
         { width: 102, height: 5, left: -1, top: -1 },
         { width: 5, height: 55, left: -1, top: -1 },
         { width: 5, height: 55, left: 96, top: -1 },
-
         { width: 58, height: 1.3, left: 20, top: 22 },
     ],
 };
+const HATS = {
+    "cat": {
+        offset: {
+            x: 1.5,
+            y: 10
+        }
+    },
+    "bear": {
+        offset: {
+            x: 24,
+            y: 10
+        }
+    },
+    "cap": {
+        offset: {
+            x: 47.5,
+            y: 10
+        }
+    },
+    "helmet": {
+        offset: {
+            x: 70.6,
+            y: 6
+        }
+    }
+}
 
 function createBlock(config) {
     // Variables
@@ -51,8 +77,7 @@ function createStage(stageName = "default") {
         createBlock(stage[i]);
     }
 }
-function createPlayer(x = 0, y = 0, color = "red") {
-
+function createPlayer(x = 0, y = 0, hue = 0, helmet = "cat") {
     const player = {
         x: x,
         y: y,
@@ -63,9 +88,17 @@ function createPlayer(x = 0, y = 0, color = "red") {
     }
     const obj = document.createElement("div");
     obj.classList.add("player");
+    obj.style.width = PLAYER_WIDTH + "vw";
+    obj.style.height = PLAYER_HEIGHT + "vw";
     obj.style.left = x + "vw";
     obj.style.top = y + "vw";
-    obj.style.backgroundColor = color;
+    obj.style.filter = `hue-rotate(${hue}deg)`;
+
+    const hat = document.createElement("div");
+    hat.classList.add("hat");
+    hat.style.backgroundPosition = `${HATS[helmet].offset.x}% ${HATS[helmet].offset.y}%`;
+    obj.appendChild(hat);
+
     player.obj = obj;
     MAP.appendChild(obj);
     PLAYERS.push(player);
@@ -74,9 +107,9 @@ function createPlayer(x = 0, y = 0, color = "red") {
 function isOverlapping(player, platform) {
     return (
         player.x < platform.left + platform.width &&
-        player.x + PLAYER_SIZE > platform.left &&
+        player.x + PLAYER_WIDTH > platform.left &&
         player.y < platform.top + platform.height &&
-        player.y + PLAYER_SIZE > platform.top
+        player.y + PLAYER_HEIGHT > platform.top
     );
 }
 
@@ -87,7 +120,7 @@ function resolveHorizontalCollisions(player) {
         }
 
         if (player.velocityX > 0) {
-            player.x = platform.left - PLAYER_SIZE;
+            player.x = platform.left - PLAYER_WIDTH;
         }
         else if (player.velocityX < 0) {
             player.x = platform.left + platform.width;
@@ -103,10 +136,10 @@ function resolveHorizontalPlayerCollisions(player) {
         }
 
         const overlaps = (
-            player.x < other.x + PLAYER_SIZE &&
-            player.x + PLAYER_SIZE > other.x &&
-            player.y < other.y + PLAYER_SIZE &&
-            player.y + PLAYER_SIZE > other.y
+            player.x < other.x + PLAYER_WIDTH &&
+            player.x + PLAYER_WIDTH > other.x &&
+            player.y < other.y + PLAYER_HEIGHT &&
+            player.y + PLAYER_HEIGHT > other.y
         );
 
         if (!overlaps) {
@@ -114,10 +147,10 @@ function resolveHorizontalPlayerCollisions(player) {
         }
 
         if (player.velocityX > 0) {
-            player.x = other.x - PLAYER_SIZE;
+            player.x = other.x - PLAYER_WIDTH;
         }
         else if (player.velocityX < 0) {
-            player.x = other.x + PLAYER_SIZE;
+            player.x = other.x + PLAYER_WIDTH;
         }
         player.velocityX = 0;
     }
@@ -132,7 +165,7 @@ function resolveVerticalCollisions(player) {
         }
 
         if (player.velocityY > 0) {
-            player.y = platform.top - PLAYER_SIZE;
+            player.y = platform.top - PLAYER_HEIGHT;
             player.onGround = true;
         }
         else if (player.velocityY < 0) {
@@ -149,10 +182,10 @@ function resolveVerticalPlayerCollisions(player) {
         }
 
         const overlaps = (
-            player.x < other.x + PLAYER_SIZE &&
-            player.x + PLAYER_SIZE > other.x &&
-            player.y < other.y + PLAYER_SIZE &&
-            player.y + PLAYER_SIZE > other.y
+            player.x < other.x + PLAYER_WIDTH &&
+            player.x + PLAYER_WIDTH > other.x &&
+            player.y < other.y + PLAYER_HEIGHT &&
+            player.y + PLAYER_HEIGHT > other.y
         );
 
         if (!overlaps) {
@@ -160,11 +193,11 @@ function resolveVerticalPlayerCollisions(player) {
         }
 
         if (player.velocityY > 0) {
-            player.y = other.y - PLAYER_SIZE;
+            player.y = other.y - PLAYER_HEIGHT;
             player.onGround = true;
         }
         else if (player.velocityY < 0) {
-            player.y = other.y + PLAYER_SIZE;
+            player.y = other.y + PLAYER_HEIGHT;
         }
         player.velocityY = 0;
     }
@@ -173,21 +206,23 @@ function resolveVerticalPlayerCollisions(player) {
 function render() {
     requestAnimationFrame(render);
 
+    let me = PLAYERS[0];
+
+    if (KEYS["ArrowLeft"] && !KEYS["ArrowRight"]) {
+        me.velocityX = -0.5;
+    }
+    else if (KEYS["ArrowRight"] && !KEYS["ArrowLeft"]) {
+        me.velocityX = 0.5;
+    }
+    else {
+        me.velocityX = 0;
+    }
+
+    if (KEYS["ArrowUp"] && me.onGround) {
+        me.velocityY = -1;
+    }
+
     for (let player of PLAYERS) {
-        if (KEYS["ArrowLeft"] && !KEYS["ArrowRight"]) {
-            player.velocityX = -0.5;
-        }
-        else if (KEYS["ArrowRight"] && !KEYS["ArrowLeft"]) {
-            player.velocityX = 0.5;
-        }
-        else {
-            player.velocityX = 0;
-        }
-
-        if (KEYS["ArrowUp"] && player.onGround) {
-            player.velocityY = -5;
-        }
-
         player.velocityY += GRAVITY;
 
         player.x += player.velocityX;
@@ -217,14 +252,14 @@ document.addEventListener("keyup", (event) => {
 createStage();
 
 // 8 Players
-createPlayer(10, 40, "red");
-createPlayer(20, 40, "green");
-createPlayer(30, 40, "blue");
-createPlayer(40, 40, "yellow");
-createPlayer(50, 40, "purple");
-createPlayer(60, 40, "cyan");
-createPlayer(70, 40, "magenta");
-createPlayer(80, 40, "orange");
+createPlayer(10, 40, 0, "cap"); // Red
+createPlayer(20, 40, 120, "bear"); // Green
+createPlayer(30, 40, 240, "cap"); // Blue
+createPlayer(40, 40, 60, "helmet"); // Yellow
+createPlayer(50, 40, 300, "cat"); // Purple
+createPlayer(60, 40, 180, "bear"); // Cyan
+createPlayer(70, 40, 330, "helmet"); // Pink
+createPlayer(80, 40, 40, "cat"); // Orange
 
 // Start Render Loop
 render();
