@@ -41,6 +41,11 @@ const HATS = {
         }
     }
 }
+let ANIMATIONS = {};
+const ANIMATION_SPEED = 10;
+
+// Get the animation JSON
+fetch("./lib/js/animation.json").then((response) => response.json()).then((json) => { ANIMATIONS = json; });
 
 function createBlock(config) {
     // Variables
@@ -84,8 +89,22 @@ function createPlayer(x = 0, y = 0, hue = 0, helmet = "cat") {
         velocityX: 0,
         velocityY: 0,
         onGround: false,
+        animation: "stand",
+        animationFrame: 0,
+        animationTimer: ANIMATION_SPEED,
         obj: null,
+
+        setAnimation(animation) {
+            if (this.animation !== animation) {
+                this.animation = animation;
+                this.animationFrame = 0;
+                this.animationTimer = 0;
+            }
+        }
     }
+
+
+
     const obj = document.createElement("div");
     obj.classList.add("player");
     obj.style.width = PLAYER_WIDTH + "vw";
@@ -210,21 +229,32 @@ function render() {
 
     if (KEYS["ArrowLeft"] && !KEYS["ArrowRight"]) {
         me.velocityX = -0.5;
+        me.obj.style.transform = "scaleX(-1)";
+        me.setAnimation("walk");
     }
     else if (KEYS["ArrowRight"] && !KEYS["ArrowLeft"]) {
         me.velocityX = 0.5;
+        me.obj.style.transform = "scaleX(1)";
+        me.setAnimation("walk");
     }
     else {
         me.velocityX = 0;
+        me.setAnimation("stand");
     }
 
     if (KEYS["ArrowUp"] && me.onGround) {
         me.velocityY = -1;
     }
 
+    if (!me.onGround) {
+        me.setAnimation("jump");
+    }
+
     for (let player of PLAYERS) {
+        // Gravity
         player.velocityY += GRAVITY;
 
+        // Movement and Collisions
         player.x += player.velocityX;
         resolveHorizontalCollisions(player);
         resolveHorizontalPlayerCollisions(player);
@@ -236,7 +266,25 @@ function render() {
         player.obj.style.left = player.x + "vw";
         player.obj.style.top = player.y + "vw";
 
+        if (player == me) {
+            // Animation
+            if (player.animationTimer > 0) {
+                player.animationTimer--;
+            }
+            else {
+                player.animationTimer = ANIMATION_SPEED;
 
+                const anim = ANIMATIONS[player.animation];
+                console.log(player.animationFrame);
+                player.obj.style.backgroundPosition = `${anim[player.animationFrame].x}% ${anim[player.animationFrame].y}%`;
+
+                player.animationFrame++;
+                
+                if (player.animationFrame >= anim.length) {
+                    player.animationFrame = 0;
+                }
+            }
+        }
     }
 }
 
