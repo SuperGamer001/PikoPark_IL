@@ -5,7 +5,7 @@ const PLATFORM_DIVS = [];
 const PLATFORM_COLLIDERS = [];
 const PLAYER_WIDTH = 3.5;
 const PLAYER_HEIGHT = 4.06;
-const GRAVITY = 0.08;
+const GRAVITY = 0.05;
 const STAGES = {
     "default": [
         { width: 102, height: 5, left: -1, top: 52 },
@@ -117,6 +117,11 @@ function createPlayer(x = 0, y = 0, hue = 0, helmet = "cat") {
     hat.classList.add("hat");
     hat.style.backgroundPosition = `${HATS[helmet].offset.x}% ${HATS[helmet].offset.y}%`;
     obj.appendChild(hat);
+
+    const numTag = document.createElement("div");
+    numTag.classList.add("numTag");
+    numTag.innerText = PLAYERS.length + 1;
+    obj.appendChild(numTag);
 
     player.obj = obj;
     MAP.appendChild(obj);
@@ -243,7 +248,7 @@ function render() {
     }
 
     if (KEYS["ArrowUp"] && me.onGround) {
-        me.velocityY = -1;
+        me.velocityY = -0.8;
     }
 
     if (!me.onGround) {

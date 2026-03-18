@@ -49,3 +49,15 @@ p, h1, h2, h3, h4, h5, h6 {
     left: -0.25vw;
     top: -1vw;
 }
+.player .numTag {
+    position: absolute;
+    font-size: 1vw;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    left: 1.5vw;
+    top: 2.2vw;
+}
+
+.player[style*="scaleX(-1)"] .numTag {
+    transform: scaleX(-1);
+}
