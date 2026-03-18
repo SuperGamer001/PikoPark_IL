@@ -9,6 +9,7 @@ body {
     font-size: 1vw;
     perspective: 35vw;
     color: Blue;
+    overflow: hidden;
 }   
 
 p, h1, h2, h3, h4, h5, h6 {
@@ -18,8 +19,15 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 #Title {
-    font-size: 13vw;
+    font-size: 10vw;
     font-weight: bold;
-    margin-left: 14vw;
+    margin-left: 16vw;
     margin-top: 10vw;
+    position: absolute;
+}
+
+.ground {
+    position: absolute;
+    background-color: blue;
+    border-radius: 8px;
 }
