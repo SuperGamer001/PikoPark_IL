@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ensure the body takes up the full height of the viewport */
+}
+#mainFrame {
+    width: 100%;
+    max-width: calc(100vh * (16 / 9)); /* Ensure the canvas maintains aspect ratio and doesn't exceed viewport height */
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}

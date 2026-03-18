@@ -1,0 +1,25 @@
+* {
+    user-select: none;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    font-size: 1vw;
+    perspective: 35vw;
+    color: Blue;
+}   
+
+p, h1, h2, h3, h4, h5, h6 {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#Title {
+    font-size: 13vw;
+    font-weight: bold;
+    margin-left: 14vw;
+    margin-top: 10vw;
+}
